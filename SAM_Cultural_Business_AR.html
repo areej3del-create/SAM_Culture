@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAM | منصة تمكين الأعمال الثقافية</title>
+<meta name="description" content="منصة SAM تساعد روّاد الأعمال الثقافية على فهم قدرات أعمالهم وتحديد فجوات التطوير واتباع مسارات عملية للنمو.">
+<style>
+/* ============ SAM · Cultural Business Enablement Platform ============
+   Based on the original SAM pitch design. Palette: warm orange (heritage)
+   flowing into lavender (change), on charcoal/black with cream accents. */
+:root{
+  --bg:#060507; --bg2:#0d0b10; --text:#f8f5f0; --muted:#aaa6ae;
+  --line:rgba(255,255,255,.11); --glass:rgba(255,255,255,.065);
+  --orange:#ff9d4d; --amber:#ffc38a; --lav:#b8a6ff; --purple:#8f7cf0;
+  --cream:#f3e7d6; --max:1180px;
+  --grad:linear-gradient(100deg,#fff 5%,#ffc38a 45%,#c3b3ff 88%);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'SF Arabic','Geeza Pro','Noto Sans Arabic','Segoe UI',Tahoma,-apple-system,BlinkMacSystemFont,sans-serif;overflow-x:hidden}
+body:before{
+  content:"";position:fixed;inset:-30%;z-index:-3;
+  background:
+   radial-gradient(circle at 20% 20%,rgba(255,157,77,.15),transparent 25%),
+   radial-gradient(circle at 80% 15%,rgba(184,166,255,.14),transparent 25%),
+   radial-gradient(circle at 65% 75%,rgba(143,124,240,.11),transparent 27%),
+   radial-gradient(circle at 25% 85%,rgba(243,231,214,.05),transparent 22%);
+  filter:blur(35px);animation:drift 16s ease-in-out infinite alternate;
+}
+body:after{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;background:linear-gradient(120deg,transparent 0%,rgba(255,255,255,.025) 45%,transparent 60%);transform:translateX(-100%);animation:sheen 12s ease-in-out infinite}
+@keyframes drift{to{transform:translate3d(5%,3%,0) scale(1.05)}}
+@keyframes sheen{55%,100%{transform:translateX(120%)}}
+a{color:inherit}
+button,input{font-family:inherit}
+
+/* ---------- Navigation ---------- */
+.nav{position:fixed;top:18px;left:50%;transform:translateX(-50%);z-index:20;width:min(94%,980px);display:flex;align-items:center;justify-content:space-between;padding:10px 12px 10px 16px;border:1px solid var(--line);background:rgba(12,11,15,.68);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);border-radius:999px;box-shadow:0 18px 60px rgba(0,0,0,.3)}
+.brand{font-weight:700;letter-spacing:-.03em;text-decoration:none}.brand span{color:var(--orange)}
+.navlinks{display:flex;gap:4px}.navlinks a{text-decoration:none;color:#c9c6cd;font-size:12px;padding:8px 11px;border-radius:999px;transition:background .25s,color .25s}.navlinks a:hover,.navlinks a.on{background:rgba(255,255,255,.08);color:#fff}
+.progress{position:fixed;top:0;inset-inline-start:0;height:2px;width:0;background:linear-gradient(90deg,var(--orange),var(--amber),var(--lav));z-index:50}
+
+/* ---------- Layout & type ---------- */
+main{width:100%}
+section{min-height:100vh;display:flex;align-items:center;padding:110px 22px 80px;position:relative;scroll-margin-top:20px}
+.container{width:min(100%,var(--max));margin:auto}
+.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.16em;color:#938f99;margin-bottom:18px}
+h1{font-size:clamp(62px,11vw,150px);line-height:.9;letter-spacing:-.075em;margin:0;font-weight:700}
+h2{font-size:clamp(40px,6vw,78px);line-height:.98;letter-spacing:-.055em;margin:0 0 24px}
+h3{font-size:24px;letter-spacing:-.03em;margin:0 0 12px}
+p{font-size:18px;line-height:1.6;color:var(--muted);max-width:720px}
+.big{font-size:clamp(26px,4vw,50px);line-height:1.1;letter-spacing:-.045em;color:#f3f1ee}
+.grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* ---------- Hero ---------- */
+.hero{text-align:center;min-height:100svh}
+.hero .container{display:flex;flex-direction:column;align-items:center}
+.hero .big{margin:22px 0 0}.hero .big+p{margin:18px 0 0}
+.logo{width:88px;height:88px;border-radius:28px;display:grid;place-items:center;margin-bottom:28px;font-size:30px;font-weight:800;letter-spacing:-.06em;color:#0a0708;background:linear-gradient(145deg,#ffe9d2,#ff9d4d 48%,#b8a6ff);box-shadow:0 0 80px rgba(255,157,77,.20),0 0 120px rgba(184,166,255,.12),inset 0 1px 0 rgba(255,255,255,.8)}
+.tag{margin-top:28px;padding:9px 15px;border:1px solid var(--line);border-radius:999px;color:#dbd8dd;background:rgba(255,255,255,.04);font-size:13px;line-height:1.5}
+.sami-tagline{margin-top:20px;display:flex;flex-direction:column;gap:5px;align-items:center}
+.sami-tagline span{font-size:clamp(22px,3vw,34px);font-weight:750;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.5}
+.sami-tagline small{font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:#7b7780}
+.scroll{position:absolute;bottom:30px;left:0;right:0;text-align:center;color:#777;font-size:11px;letter-spacing:.16em;text-transform:uppercase}
+/* Sadu-inspired woven band: a quiet nod to Saudi craft */
+.sadu{width:min(260px,60%);height:12px;margin:26px auto 0;opacity:.75;border-radius:3px;
+ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='12'%3E%3Cpath d='M0 12L8 0l8 12z' fill='%23ff9d4d'/%3E%3Cpath d='M16 0l8 12 8-12z' fill='%23b8a6ff'/%3E%3Cpath d='M32 12l8-12 8 12z' fill='%23f3e7d6' fill-opacity='.55'/%3E%3C/svg%3E");
+ -webkit-mask-image:linear-gradient(90deg,transparent,#000 20%,#000 80%,transparent);mask-image:linear-gradient(90deg,transparent,#000 20%,#000 80%,transparent)}
+
+/* ---------- Cards & shared blocks ---------- */
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:18px}
+.card{grid-column:span 4;border:1px solid var(--line);background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.025));border-radius:28px;padding:28px;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 20px 70px rgba(0,0,0,.18);transition:transform .35s ease,border-color .35s ease}
+.card:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.2)}
+.card.wide{grid-column:span 8}.card.full{grid-column:1/-1}.card.third{grid-column:span 3}
+.card .num{font-size:12px;color:#8a8690;margin-bottom:42px;letter-spacing:.08em}
+.card.tight .num{margin-bottom:18px}
+.card strong{color:#f5f3f0}
+.card p{font-size:16px;margin-bottom:0}
+.source{font-size:11px;color:#77737c;margin-top:18px;line-height:1.6}
+.question{padding:35px;border:1px solid var(--line);border-radius:34px;background:rgba(255,255,255,.04);margin-top:28px;position:relative;overflow:hidden}
+.question:after{content:"";position:absolute;width:260px;height:260px;inset-inline-end:-120px;top:-130px;border-radius:50%;background:rgba(184,166,255,.14);filter:blur(20px)}
+.question .q{font-size:clamp(26px,4vw,52px);line-height:1.08;letter-spacing:-.045em;position:relative;z-index:1}
+.pills{display:flex;flex-wrap:wrap;gap:9px;margin-top:24px}
+.pill{border:1px solid var(--line);padding:9px 13px;border-radius:999px;color:#c9c6cd;background:rgba(255,255,255,.035);font-size:13px;display:inline-block}
+.pill.good{border-color:rgba(184,166,255,.42);color:#ddd4ff}
+.pill.warm{border-color:rgba(255,157,77,.42);color:#ffd2ad}
+.pill.no{border-color:rgba(255,255,255,.14);color:#8f8b95;text-decoration:line-through}
+.guard{border-inline-start:2px solid var(--orange);padding-inline-start:18px;margin-top:24px;color:#c1bdc6;font-size:14px;line-height:1.6;max-width:820px}
+.badge{display:inline-flex;align-items:center;gap:7px;font-size:11px;letter-spacing:.06em;color:#ffd2ad;border:1px dashed rgba(255,157,77,.45);border-radius:999px;padding:5px 11px;background:rgba(255,157,77,.06)}
+.badge:before{content:"";width:6px;height:6px;border-radius:50%;background:var(--orange)}
+
+/* ---------- Challenge list ---------- */
+.needs{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:35px}
+.need{border:1px solid var(--line);border-radius:22px;padding:20px;background:rgba(255,255,255,.04)}
+.need b{display:block;font-size:11px;color:var(--orange);margin-bottom:14px;letter-spacing:.1em}
+.need h3{font-size:17px;line-height:1.3;margin:0}
+
+/* ---------- Engine diagram ---------- */
+.engine-diagram{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:12px;align-items:center;margin-top:28px}
+.engine-node{border:1px solid var(--line);border-radius:22px;padding:22px;background:rgba(255,255,255,.045);min-height:145px;display:flex;flex-direction:column;justify-content:center}
+.engine-node b{font-size:10px;letter-spacing:.16em;color:#8a8690;margin-bottom:10px}.engine-node span{font-size:20px;font-weight:650;letter-spacing:-.03em}.engine-node small{color:#8d8993;font-size:12px;line-height:1.5;margin-top:8px}
+.engine-node.glow{border-color:rgba(255,157,77,.45);background:linear-gradient(145deg,rgba(255,157,77,.13),rgba(184,166,255,.07));box-shadow:0 0 45px rgba(255,157,77,.08)}
+.engine-arrow{font-size:28px;color:#777;text-align:center}
+
+/* ---------- How it works (9 steps) ---------- */
+.flow{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:36px}
+.node{border:1px solid var(--line);border-radius:24px;padding:22px;background:rgba(255,255,255,.045);transition:border-color .3s,transform .3s}
+.node:hover{border-color:rgba(184,166,255,.4);transform:translateY(-2px)}
+.node b{display:block;font-size:12px;color:#8d8993;margin-bottom:22px;letter-spacing:.08em}
+.node h3{font-size:19px}.node p{font-size:15px;margin:0}
+
+/* ---------- Journey timeline ---------- */
+.timeline{display:flex;gap:0;align-items:stretch;margin-top:42px;overflow-x:auto;padding:6px 0 10px}
+.step{min-width:210px;flex:1;padding:24px 18px 10px 0;padding-inline:0 18px;border-top:1px solid var(--line);position:relative}
+.step:before{content:"";position:absolute;top:-5px;inset-inline-start:0;width:9px;height:9px;border-radius:50%;background:var(--orange);box-shadow:0 0 22px var(--orange)}
+.step:nth-child(n+3):before{background:var(--amber);box-shadow:0 0 22px var(--amber)}
+.step:nth-child(n+4):before{background:var(--lav);box-shadow:0 0 22px var(--lav)}
+.step .year{font-size:12px;color:#8d8993;margin-bottom:20px}
+.step h3{font-size:19px}.step p{font-size:15px}
+
+/* ---------- Interactive demo ---------- */
+.dashboard{scroll-margin-top:92px;border:1px solid var(--line);border-radius:34px;background:linear-gradient(145deg,rgba(255,255,255,.09),rgba(255,255,255,.025));padding:26px;margin-top:35px;box-shadow:0 35px 100px rgba(0,0,0,.25);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:14px;margin-bottom:22px;border-bottom:1px solid var(--line);scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;display:inline-flex;align-items:center;gap:7px;border:1px solid transparent;background:none;color:#a7a3ac;font-size:13px;padding:9px 14px;border-radius:999px;cursor:pointer;transition:all .25s;white-space:nowrap}
+.tab i{font-style:normal;opacity:.55;font-size:11px}
+.tab:hover{color:#fff;background:rgba(255,255,255,.05)}
+.tab.on{color:#0a0708;background:linear-gradient(120deg,#ffd9b5,#ff9d4d 55%,#c3b3ff);font-weight:650}
+.panel{display:none;animation:fade .45s ease}
+.panel.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.panel h3.ph{font-size:26px;margin-bottom:6px}
+.panel p.pp{font-size:15px;margin:0 0 22px}
+.field{margin-bottom:22px}
+.field>label,.flabel{display:block;font-size:12px;color:#9d99a3;margin-bottom:10px;letter-spacing:.06em;text-transform:uppercase}
+.text-in{width:100%;max-width:440px;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:14px;color:var(--text);font-size:15px;padding:12px 14px;outline:none;transition:border-color .25s}
+.text-in:focus{border-color:rgba(255,157,77,.6)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:rgba(255,255,255,.035);color:#cfccd3;font-size:13px;padding:9px 14px;border-radius:999px;cursor:pointer;transition:all .22s}
+.chip:hover{border-color:rgba(255,255,255,.3);color:#fff}
+.chip.on{border-color:rgba(255,157,77,.7);background:rgba(255,157,77,.14);color:#ffe2c8}
+.chips.multi .chip.on{border-color:rgba(184,166,255,.7);background:rgba(184,166,255,.14);color:#e6dfff}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;align-items:center}
+.button{display:inline-flex;align-items:center;gap:8px;padding:13px 20px;border-radius:999px;background:#f5f2ee;color:#0a0909;text-decoration:none;font-weight:650;font-size:14px;border:0;cursor:pointer;box-shadow:0 15px 45px rgba(255,255,255,.10);transition:transform .2s,box-shadow .2s}
+.button:hover{transform:translateY(-2px);box-shadow:0 18px 50px rgba(255,200,150,.2)}
+.button.ghost{background:rgba(255,255,255,.06);color:#eee;border:1px solid var(--line);box-shadow:none}
+.dash-top{display:flex;justify-content:space-between;gap:20px;align-items:center;margin-bottom:22px;flex-wrap:wrap}
+.score{font-size:74px;letter-spacing:-.08em;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}.score span{font-size:18px;color:#777;letter-spacing:0;margin-inline-start:4px}
+.bars{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.bar{padding:18px;border:1px solid var(--line);border-radius:20px;background:rgba(0,0,0,.14)}
+.bar label{display:flex;justify-content:space-between;gap:10px;font-size:13px;color:#b5b1ba}.bar label b{color:#fff;font-variant-numeric:tabular-nums}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:7px;border-radius:9px;margin-top:14px;background:#221f27;outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:#fff;border:0;box-shadow:0 2px 10px rgba(0,0,0,.5),0 0 0 4px rgba(255,157,77,.25)}
+input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#fff;border:0;box-shadow:0 2px 10px rgba(0,0,0,.5),0 0 0 4px rgba(255,157,77,.25)}
+input[type=range]:focus-visible{box-shadow:0 0 0 3px rgba(184,166,255,.5)}
+.track{height:7px;background:#221f27;border-radius:9px;margin-top:12px;overflow:hidden}.fill{height:100%;border-radius:9px;background:linear-gradient(90deg,var(--orange),var(--lav));transition:width .6s cubic-bezier(.2,.8,.2,1)}
+[dir=rtl] .fill{background:linear-gradient(270deg,var(--orange),var(--lav))}
+.cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.mini{border:1px solid var(--line);border-radius:24px;padding:22px;background:rgba(255,255,255,.04);display:flex;flex-direction:column}
+.mini .k{font-size:11px;color:var(--orange);letter-spacing:.1em;margin-bottom:16px;text-transform:uppercase}
+.mini h4{font-size:18px;margin:0 0 10px;letter-spacing:-.02em}
+.mini p{font-size:14px;margin:0;line-height:1.55}
+.mini .meta{font-size:12px;color:#8d8993;margin-top:14px}
+.mini .button{margin-top:16px;align-self:flex-start;padding:9px 14px;font-size:12px}
+.mini .button.saved{background:rgba(184,166,255,.16);color:#e6dfff;border:1px solid rgba(184,166,255,.5);box-shadow:none}
+.avatar{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;font-weight:700;color:#0a0708;background:linear-gradient(145deg,#ffd9b5,#b8a6ff);margin-bottom:14px}
+.todo{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-top:1px solid rgba(255,255,255,.07);font-size:14px;line-height:1.45;color:#d5d2d9;cursor:pointer}
+.todo input{accent-color:var(--orange);width:17px;height:17px;margin:2px 0 0;flex:none}
+.todo.done span{text-decoration:line-through;color:#807c86}
+.chat{border:1px solid var(--line);border-radius:28px;padding:22px;background:rgba(0,0,0,.16)}
+.log{height:330px;overflow-y:auto;padding-inline-end:6px;display:flex;flex-direction:column}
+.bubble{padding:13px 16px;border-radius:18px;margin:7px 0;max-width:86%;line-height:1.5;font-size:14px;animation:fade .35s ease}
+.user{margin-inline-start:auto;background:rgba(255,255,255,.09)}
+.bot{background:linear-gradient(145deg,rgba(255,157,77,.12),rgba(184,166,255,.08));border:1px solid rgba(255,157,77,.2)}
+.typing{display:inline-flex;gap:4px}.typing i{width:6px;height:6px;border-radius:50%;background:#bbb;animation:blink 1s infinite}.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes blink{0%,80%,100%{opacity:.25}40%{opacity:1}}
+.chat-form{display:flex;gap:8px;margin-top:14px}
+.chat-form .text-in{max-width:none;flex:1;border-radius:999px;padding-inline:18px}
+.report{border:1px solid var(--line);border-radius:26px;padding:28px;background:rgba(0,0,0,.18)}
+.report-head{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;align-items:flex-start;border-bottom:1px solid var(--line);padding-bottom:20px;margin-bottom:20px}
+.report h4{font-size:13px;color:#9d99a3;letter-spacing:.08em;text-transform:uppercase;margin:22px 0 10px}
+.report ul{margin:0;padding-inline-start:20px;color:#d5d2d9;font-size:15px;line-height:1.7}
+.kv{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.kv div{font-size:14px;color:#e6e3e9}.kv small{display:block;color:#8d8993;font-size:11px;margin-bottom:4px;letter-spacing:.06em;text-transform:uppercase}
+
+/* ---------- Insights ---------- */
+.ins{display:grid;grid-template-columns:1.6fr 1fr;gap:16px;margin-top:20px}
+.hbar{display:grid;grid-template-columns:minmax(120px,38%) 1fr 44px;gap:12px;align-items:center;padding:9px 0;font-size:13px;color:#cfccd3}
+.hbar .track{margin:0;height:10px}.hbar b{font-variant-numeric:tabular-nums;text-align:end;color:#fff}
+.tile{border:1px solid var(--line);border-radius:22px;padding:20px;background:rgba(255,255,255,.04);margin-bottom:12px}
+.tile small{display:block;font-size:11px;color:#8d8993;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.tile b{font-size:19px;letter-spacing:-.02em;line-height:1.3}
+
+/* ---------- Roadmap, CTA, footer ---------- */
+.roadmap{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:35px}
+.road{border:1px solid var(--line);border-radius:24px;padding:24px;background:rgba(255,255,255,.04)}
+.road.now{border-color:rgba(255,157,77,.45);background:linear-gradient(145deg,rgba(255,157,77,.10),rgba(255,255,255,.03))}
+.road .phase{font-size:11px;color:#8d8993;margin-bottom:20px;letter-spacing:.08em}.road p{font-size:15px;margin:0}
+.cta{text-align:center}.cta h2{max-width:900px;margin:0 auto}.cta p{margin:25px auto}
+footer{padding:40px 22px 70px;color:#6c6871;font-size:12px;text-align:center;line-height:1.7}
+
+/* ---------- Reveal on scroll ---------- */
+.js .reveal{opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+.js .reveal.visible{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .js .reveal{opacity:1;transform:none;transition:none}
+  body:before,body:after{animation:none}
+  .panel,.bubble{animation:none}
+}
+
+/* ---------- Responsive ---------- */
+@media(max-width:900px){
+ .navlinks{display:none}.nav{justify-content:center}
+ .grid{display:block}.card{margin-bottom:14px}
+ .needs{grid-template-columns:1fr 1fr}.flow{grid-template-columns:1fr 1fr}
+ .bars{grid-template-columns:1fr}.cards3{grid-template-columns:1fr}
+ .roadmap{grid-template-columns:1fr 1fr}.ins{grid-template-columns:1fr}
+ .engine-diagram{grid-template-columns:1fr}.engine-arrow{transform:rotate(90deg)}
+ section{padding-top:95px}.dashboard{padding:18px;border-radius:26px}.kv{grid-template-columns:1fr 1fr}
+}
+@media(max-width:520px){
+ .flow,.roadmap,.needs{grid-template-columns:1fr}.card{padding:23px}.question{padding:25px}
+ .logo{width:76px;height:76px}.score{font-size:60px}.log{height:300px}.kv{grid-template-columns:1fr}
+ .hbar{grid-template-columns:1fr 40px}.hbar span{grid-column:1/-1}
+}
+
+/* ---------- Arabic typography: connected script needs no tracking and more leading ---------- */
+*{letter-spacing:0!important}
+h1{line-height:1.1}h2{line-height:1.3}.big{line-height:1.45}.question .q{line-height:1.4}
+h3{line-height:1.45}.need h3{line-height:1.5}p{line-height:1.85}.score{line-height:1.1}
+.eyebrow,.card .num,.node b,.need b{font-size:13px}
+.logo,.brand,.score,h1.latin{direction:ltr}
+
+
+/* ---------- Print: only the report ---------- */
+@media print{
+ body{background:#fff}body:before,body:after,.nav,.progress,footer,main>section:not(#demo),#demo .dhead,.tabs,.panel:not(#p-report),.noprint{display:none!important}
+ section{min-height:0;padding:0;display:block}.panel#p-report{display:block!important}
+ .dashboard,.report{border:0;box-shadow:none;background:#fff;padding:0;margin:0;backdrop-filter:none}
+ .js .reveal{opacity:1!important;transform:none!important}
+ #p-report *{color:#111!important;border-color:#ccc!important}
+}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+
+<nav class="nav" aria-label="التنقل الرئيسي">
+  <a class="brand" href="#home">SAM <span>· الثقافة</span></a>
+  <div class="navlinks">
+    <a href="#sector">القطاع</a><a href="#challenge">التحدي</a><a href="#solution">الحل</a><a href="#how">آلية العمل</a><a href="#demo">التجربة</a><a href="#insights">المؤشرات</a><a href="#mvp">النموذج الأولي</a>
+  </div>
+</nav>
+
+<main>
+<!-- ===== Introduction ===== -->
+<section class="hero" id="home">
+ <div class="container reveal">
+   <div class="logo">SAM</div>
+   <div class="eyebrow">جذور في التراث · جاهزية للتغيير</div>
+   <h1 class="grad latin">SAM</h1>
+   <p class="big"><strong>منصة تمكين الأعمال الثقافية.</strong></p>
+   <p>تخيّل: حِرفية تنسج السدو، استوديو فخار، علامة أزياء مستوحاة من الأزياء التقليدية، متحفًا خاصًا صغيرًا، دار تصميم، أو فرقة فنون أدائية. قيمتهم الثقافية واضحة، لكن الجانب التجاري هو ما يحتاج غالبًا إلى الدعم.</p>
+   <div class="tag"><strong>SAM</strong> تساعد الأعمال الثقافية على معرفة موقعها الحالي، وما الخطوة التالية.</div>
+   <div class="sami-tagline"><span lang="ar" dir="rtl">سم وش بغيت؟</span><small>شعارنا · من هنا يبدأ الحوار.</small></div>
+   <div class="sadu" aria-hidden="true"></div>
+ </div>
+ <div class="scroll">مرّر للبدء ↓</div>
+</section>
+
+<!-- ===== 01 Sector context ===== -->
+<section id="sector">
+ <div class="container">
+  <div class="eyebrow reveal">01 · قطاع الثقافة والتراث</div>
+  <h2 class="reveal">الثقافة تتحوّل<br>إلى <span class='grad'>اقتصاد.</span></h2>
+  <p class="reveal">تستثمر المملكة العربية السعودية في الثقافة ضمن تحوّلها الوطني. لم يعد التراث شيئًا نحافظ عليه فقط، بل مجالًا يبني عليه الناس مسارات مهنية ومشاريع تجارية.</p>
+  <div class="grid reveal" style="margin-top:35px">
+   <div class="card"><div class="num">01 · التراث</div><h3>قاعدة ثقافية عميقة.</h3><p>الحِرف والأزياء والعمارة والمأكولات والموسيقى والحكايات تحمل معرفة توارثتها الأجيال، ولها قيمة حقيقية لدى جمهور اليوم.</p></div>
+   <div class="card"><div class="num">02 · التغيير</div><h3>قطاع يتّسع.</h3><p>برامج وفعاليات ثقافية جديدة وجمهور متنامٍ يفتحون مساحة أوسع للمنتجات والخدمات والتجارب الثقافية.</p></div>
+   <div class="card"><div class="num">03 · المشاريع</div><h3>المشاريع الصغيرة هي الحامل.</h3><p>جزء كبير من هذا النشاط يقوم به حِرفيون أفراد واستوديوهات ومنشآت صغيرة، ونموّهم هو ما يوصل القيمة الثقافية إلى السوق.</p></div>
+   
+  </div>
+  <div class="pills reveal"><span class="pill warm">الحِرف التقليدية والمنتجات التراثية</span><span class="pill warm">التصميم الثقافي والإبداعي</span><span class="pill warm">الأزياء والإنتاج الإبداعي</span><span class="pill good">المتاحف والتجارب الثقافية</span><span class="pill good">الفنون البصرية والأدائية</span><span class="pill good">مشاريع ثقافية أخرى</span></div>
+  <div class="question reveal"><div class="q">القطاع يزداد <span class='grad'>حضورًا.</span><br>فهل تزداد مشاريعه الصغيرة <span class='grad'>قدرةً؟</span></div></div>
+ </div>
+</section>
+
+<!-- ===== 02 The challenge ===== -->
+<section id="challenge">
+ <div class="container">
+  <div class="eyebrow reveal">02 · التحدي</div>
+  <h2 class="reveal">الظهور لا يعني<br>بالضرورة <span class='grad'>القدرة.</span></h2>
+  <p class="reveal">كثير من روّاد الأعمال الثقافية يملكون منتجات مميزة وأفكارًا إبداعية ومعرفة ثقافية، ومع ذلك يواجهون تحديات في تطوير أعمالهم تحدّ من نموّهم.</p>
+  <div class="needs reveal">
+   <div class="need"><b>01</b><h3>صعوبة تحديد احتياجات التطوير الفعلية للمشروع</h3></div>
+   <div class="need"><b>02</b><h3>فهم محدود للجمهور المستهدف والسوق</h3></div>
+   <div class="need"><b>03</b><h3>حضور رقمي ضعيف أو قدرات محدودة في البيع عبر الإنترنت</h3></div>
+   <div class="need"><b>04</b><h3>صعوبات في التسعير والتخطيط المالي</h3></div>
+   <div class="need"><b>05</b><h3>صعوبة تحويل القيمة الثقافية إلى قيمة تجارية واضحة</h3></div>
+   <div class="need"><b>06</b><h3>وصول محدود إلى الإرشاد والدعم المتخصص</h3></div>
+   <div class="need"><b>07</b><h3>وعي محدود بالملكية الفكرية والحقوق</h3></div>
+   <div class="need"><b>08</b><h3>عدم وضوح الخطوة التي يجب البدء بها</h3></div>
+   
+  </div>
+  <div class="grid reveal" style="margin-top:22px">
+   <div class="card wide"><div class="num">حالة توضيحية</div><h3>تعرّفوا على نورة.</h3><p>نورة تنسج قطع السدو التقليدية وتبيعها. منتجها مميز ويلقى إعجاب الناس، لكنها تسعّر بالتقدير، وتبيع عبر الرسائل المباشرة فقط، ولا تعرف كيف تصل إلى عملاء خارج دائرة معارفها.</p>
+     <div class="pills"><span class="pill">منتج قوي</span><span class="pill">تسعير بالتقدير</span><span class="pill">لا يوجد متجر إلكتروني</span><span class="pill">الخطوة التالية غير واضحة</span></div></div>
+   <div class="card"><div class="num">السؤال</div><h3>من أين تبدأ؟</h3><p>النصائح العامة كثيرة. ما ينقصها هو صورة واضحة عن مشروعها هي، ومسار مرتّب حسب الأولوية يناسبه.</p></div>
+  </div>
+  <div class="source reveal">نورة شخصية افتراضية لتوضيح المشكلة، وليست شخصًا حقيقيًا أو عميلة فعلية.</div>
+ </div>
+</section>
+
+<!-- ===== 03 The proposed solution ===== -->
+<section id="solution">
+ <div class="container">
+  <div class="eyebrow reveal">03 · الحل المقترح</div>
+  <h2 class="reveal">هذه <span class='grad'>SAM</span>.</h2>
+  <p class="big reveal">تقييم جاهزية موجَّه للأعمال الثقافية، يحوّل ملف المشروع إلى <strong>وضوح وأولويات ومسار تطوير.</strong></p>
+  <div class="question reveal" style="margin-top:32px">
+   <div class="q" style="font-size:clamp(24px,3.4vw,42px)"><span class='grad'>المحرّك</span> نفسه، بغاية جديدة.</div>
+   <p>بدأت SAM كمحرّك لقياس جاهزية المنشآت الصغيرة والمتوسطة: مدخلات، ثم تقييم، ثم مخرجات مفيدة. احتفظنا بهذا الذكاء الإرشادي ووجّهناه نحو المشاريع الثقافية.</p>
+   <div class="engine-diagram">
+     <div class="engine-node"><b>المدخلات</b><span>ملف المشروع</span><small>الفئة · المرحلة · الجمهور · التحديات</small></div>
+     <div class="engine-arrow">←</div>
+     <div class="engine-node glow"><b>المحرّك</b><span>تقييم الجاهزية</span><small>ستة محاور للقدرات بتقييم شفاف</small></div>
+     <div class="engine-arrow">←</div>
+     <div class="engine-node"><b>المخرجات</b><span>مسار التطوير</span><small>الفجوات · التوصيات · خارطة الطريق</small></div>
+   </div>
+  </div>
+  <div class="pills reveal"><span class="pill no">أرشيف تراثي</span><span class="pill no">مشروع رقمنة</span><span class="pill no">تطبيق لزوّار المتاحف</span><span class="pill warm">تمكين تجاري للمشاريع الثقافية</span></div>
+  <div class="guard reveal">المبدأ: <strong>الأعمال الثقافية تحتاج إلى أكثر من الظهور.</strong> تحتاج إلى القدرات والأدوات والإرشاد لتنمو باستدامة مع الحفاظ على هويتها وقيمتها الثقافية.</div>
+ </div>
+</section>
+
+<!-- ===== 04 How it works ===== -->
+<section id="how">
+ <div class="container">
+  <div class="eyebrow reveal">04 · آلية العمل</div>
+  <h2 class="reveal">تسع خطوات من<br>«أين أنا؟» إلى <span class='grad'>«ما التالي؟»</span></h2>
+  <p class="reveal">كل خطوة تُبنى على ما قبلها، فيمكن ربط كل توصية بمعلومة قدّمها صاحب المشروع لـSAM.</p>
+  <div class="flow reveal">
+   <div class="node"><b>01 · الملف</b><h3>ملف المشروع</h3><p>الفئة، المرحلة، المنتج أو الخدمة، الجمهور، التحديات الحالية والقدرات.</p></div>
+   <div class="node"><b>02 · التقييم</b><h3>تقييم الجاهزية</h3><p>ستة محاور، من القيمة المقدَّمة إلى الوعي بالملكية الفكرية والحقوق.</p></div>
+   <div class="node"><b>03 · التحديد</b><h3>فجوات التطوير</h3><p>تُبرز SAM المجالات التي يحتاج فيها المشروع إلى الدعم أكثر من غيرها.</p></div>
+   <div class="node"><b>04 · التوصية</b><h3>توصيات مخصّصة</h3><p>نصائح عملية مرتّبة حسب الأولوية، مبنية على الملف والفجوات.</p></div>
+   <div class="node"><b>05 · المطابقة</b><h3>الخبراء والموارد</h3><p>أنواع الخبراء والموارد ومسارات الدعم المناسبة.</p></div>
+   <div class="node"><b>06 · الخطة</b><h3>خارطة التطوير</h3><p>خطوات قابلة للتنفيذ بترتيب واضح: الآن، ثم لاحقًا.</p></div>
+   <div class="node"><b>07 · السؤال</b><h3>Ask SAM</h3><p>مساعد يجيب عن الأسئلة الشائعة في تطوير الأعمال.</p></div>
+   <div class="node"><b>08 · المعرفة</b><h3>مؤشرات الأعمال</h3><p>صورة مجمّعة تحفظ الخصوصية عن احتياجات التطوير في القطاع.</p></div>
+   <div class="node"><b>09 · المتابعة</b><h3>التقدّم والتقارير</h3><p>نتائج الجاهزية وتقرير تطوير يحتفظ به صاحب المشروع.</p></div>
+   
+  </div>
+ </div>
+</section>
+
+<!-- ===== 05 User experience ===== -->
+<section id="journey">
+ <div class="container">
+  <div class="eyebrow reveal">05 · تجربة المستخدم</div>
+  <h2 class="reveal">ليست استمارة.<br>بل <span class='grad'>رحلة موجَّهة.</span></h2>
+  <p class="reveal">هكذا ستبدو التجربة لنورة، حالتنا التوضيحية.</p>
+  <div class="timeline reveal">
+   <div class="step"><div class="year">الدقيقة 1</div><h3>تعرّف بمشروعها</h3><p>بضع نقرات: حِرف تقليدية، بداية النشاط، تبيع للزوّار.</p></div>
+   <div class="step"><div class="year">الدقيقة 5</div><h3>ترى جاهزيتها</h3><p>منتج قوي، ودرجات أقل في البيع الرقمي والتسعير.</p></div>
+   <div class="step"><div class="year">الدقيقة 8</div><h3>تحصل على أولوياتها</h3><p>ثلاث توصيات مركّزة بدلًا من قائمة طويلة.</p></div>
+   <div class="step"><div class="year">الأسبوع 1</div><h3>تتبع خارطة طريق</h3><p>تحسب تكلفة منتج واحد، وتجهّز قناة طلب واضحة.</p></div>
+   <div class="step"><div class="year">باستمرار</div><h3>تتابع تقدّمها</h3><p>خطوات منجزة، وتقرير، و Ask SAM عند الحاجة.</p></div>
+   
+  </div>
+  <div class="question reveal"><div class="q">من <span class='grad'>«لا أعرف ما أحتاجه»</span><br>إلى <span class='grad'>«أعرف خطواتي الثلاث القادمة».</span></div></div>
+ </div>
+</section>
+
+<!-- ===== 06 Interactive demo ===== -->
+<section id="demo">
+ <div class="container">
+  <div class="dhead">
+   <div class="eyebrow reveal">06 · التجربة التفاعلية</div>
+   <h2 class="reveal">جرّب SAM <span class='grad'>بنفسك.</span></h2>
+   <p class="reveal">أنشئ ملفًا، حرّك المؤشرات، وشاهد النتائج والتوصيات وخارطة الطريق تتغيّر معها.</p>
+   <span class="badge reveal">نموذج تفاعلي · بيانات تجريبية · ردود مُعدّة مسبقًا</span>
+  </div>
+
+  <div class="dashboard reveal">
+   <div class="tabs" role="tablist" id="tabs">
+    <button class="tab on" role="tab" data-tab="profile" aria-selected="true"><i>1</i><span>الملف</span></button>
+    <button class="tab" role="tab" data-tab="assess" aria-selected="false"><i>2</i><span>التقييم</span></button>
+    <button class="tab" role="tab" data-tab="recs" aria-selected="false"><i>3</i><span>التوصيات</span></button>
+    <button class="tab" role="tab" data-tab="experts" aria-selected="false"><i>4</i><span>الخبراء</span></button>
+    <button class="tab" role="tab" data-tab="roadmap" aria-selected="false"><i>5</i><span>خارطة الطريق</span></button>
+    <button class="tab" role="tab" data-tab="chat" aria-selected="false"><i>6</i><span>Ask SAM</span></button>
+    <button class="tab" role="tab" data-tab="report" aria-selected="false"><i>7</i><span>التقرير</span></button>
+    
+   </div>
+
+   <!-- Step 1 · Business profile -->
+   <div class="panel on" id="p-profile" role="tabpanel">
+    <h3 class="ph">عرّف SAM بالمشروع</h3><p class="pp">اختر ما يناسبك، أو حمّل الحالة التوضيحية.</p>
+    <div class="field"><label for="bizName">اسم المشروع (اختياري)</label><input class="text-in" id="bizName" type="text" maxlength="60" placeholder="مثال: استوديو نورة للسدو"></div>
+    <div class="field"><span class="flabel">فئة المشروع</span><div class="chips" id="catChips"></div></div>
+    <div class="field"><span class="flabel">مرحلة المشروع</span><div class="chips" id="stageChips"></div></div>
+    <div class="field"><span class="flabel">الجمهور الرئيسي</span><div class="chips" id="audChips"></div></div>
+    <div class="field"><span class="flabel">التحديات الحالية (اختر ما ينطبق)</span><div class="chips multi" id="chChips"></div></div>
+    <div class="actions"><button class="button" data-go="assess">الانتقال إلى التقييم ←</button><button class="button ghost" id="loadNoura">تحميل الحالة التوضيحية: نورة</button></div>
+   </div>
+
+   <!-- Step 2 · Readiness assessment -->
+   <div class="panel" id="p-assess" role="tabpanel">
+    <div class="dash-top">
+     <div><div class="eyebrow" style="margin-bottom:8px">جاهزية المشروع الثقافي</div><div class="score"><b id="scoreNum">0</b><span>/100</span></div></div>
+     <div style="text-align:end"><div class="pill warm" id="statusPill"></div><div class="source" style="margin-top:10px">درجة توضيحية · متوسط بسيط لستة محاور</div></div>
+    </div>
+    <p class="pp">حرّك كل مؤشر ليصف وضع المشروع، وسيتحدّث كل شيء آخر تلقائيًا.</p>
+    <div class="bars" id="sliders"></div>
+    <div class="pills" id="sgPills"></div>
+    <div class="actions"><button class="button" data-go="recs">عرض التوصيات ←</button></div>
+   </div>
+
+   <!-- Steps 3–4 · Gaps and recommendations -->
+   <div class="panel" id="p-recs" role="tabpanel">
+    <h3 class="ph">أولوياتك</h3><p class="pp" id="recsIntro"></p>
+    <div class="cards3" id="recCards"></div>
+    <div class="guard" id="catTip"></div>
+    <div class="actions"><button class="button" data-go="experts">عرض الدعم المناسب ←</button></div>
+   </div>
+
+   <!-- Step 5 · Expert and resource matching -->
+   <div class="panel" id="p-experts" role="tabpanel">
+    <h3 class="ph">دعم يناسب فجواتك</h3><p class="pp">أنواع الخبراء والموارد التي قد تساعد في كل مجال ذي أولوية.</p>
+    <div class="cards3" id="expCards"></div>
+    <div class="source">هذه ملفات توضيحية لأغراض العرض. لا تملك SAM حاليًا شبكة خبراء موثّقة، ولا يتم أي تواصل فعلي.</div>
+    <div class="actions"><button class="button" data-go="roadmap">بناء خارطة الطريق ←</button></div>
+   </div>
+
+   <!-- Step 6 · Development roadmap -->
+   <div class="panel" id="p-roadmap" role="tabpanel">
+    <h3 class="ph">خارطة تطوير مشروعك</h3><p class="pp">ضع علامة على كل خطوة عند إنجازها.</p>
+    <div class="bar" style="margin-bottom:14px"><label><span>التقدّم في خارطة الطريق</span><b id="doneTxt"></b></label><div class="track"><div class="fill" id="doneFill" style="width:0"></div></div></div>
+    <div class="cards3" id="roadCards"></div>
+    <div class="actions"><button class="button" data-go="chat">اسأل SAM ←</button></div>
+   </div>
+
+   <!-- Step 7 · Ask SAM -->
+   <div class="panel" id="p-chat" role="tabpanel">
+    <h3 class="ph">Ask SAM</h3><p class="pp">اختر سؤالًا مقترحًا أو اكتب سؤالك.</p>
+    <div class="chat">
+     <div class="log" id="log" aria-live="polite"></div>
+     <div class="chips" id="suggest" style="margin-top:12px"></div>
+     <form class="chat-form" id="chatForm"><input class="text-in" id="chatIn" type="text" autocomplete="off" placeholder="اكتب سؤالك…" aria-label="اكتب سؤالك…"><button class="button" type="submit">إرسال</button></form>
+    </div>
+    <div class="actions"><button class="button" data-go="report">عرض تقريري ←</button></div>
+   </div>
+
+   <!-- Step 9 · Progress and report -->
+   <div class="panel" id="p-report" role="tabpanel">
+    <div class="report" id="report"></div>
+    <div class="actions noprint"><button class="button" id="printBtn">طباعة / حفظ PDF</button><button class="button ghost" id="resetBtn">إعادة ضبط التجربة</button></div>
+   </div>
+  </div>
+ </div>
+</section>
+
+<!-- ===== 07 Ecosystem insights ===== -->
+<section id="insights">
+ <div class="container">
+  <div class="eyebrow reveal">07 · مؤشرات المنظومة</div>
+  <h2 class="reveal">المشروع يحصل على خارطة طريق.<br>والقطاع يحصل على <span class='grad'>مؤشر.</span></h2>
+  <p class="reveal">مع استخدام مشاريع كثيرة لـSAM، يمكن للنتائج المجمّعة مجهولة الهوية أن توضّح للجهات الداعمة أين تشتدّ الحاجة إلى الدعم. اللوحة التالية تبيّن كيف قد يبدو ذلك.</p>
+  <div class="dashboard reveal">
+   <div class="dash-top"><div class="chips" id="insChips"></div><span class="badge">بيانات تجريبية · ليست أرقامًا حقيقية عن القطاع</span></div>
+   <div class="ins">
+    <div><div class="flabel">نسبة المشاريع في العيّنة التجريبية التي حدّدت كل محور كحاجة تطوير</div><div id="insBars"></div></div>
+    <div>
+     <div class="tile"><small>أبرز حاجة في هذا العرض</small><b id="insTop"></b></div>
+     <div class="tile"><small>مجموعة البيانات</small><b>120 ملفًا افتراضيًا</b></div>
+     <div class="tile"><small>الخصوصية</small><b>بيانات مجمّعة فقط دون عرض أي مشروع بعينه</b></div>
+    </div>
+   </div>
+  </div>
+  <div class="guard reveal">هذه الأرقام افتراضية لتوضيح الخاصية. لا تملك SAM وصولًا إلى بيانات حقيقية على مستوى القطاع، ولا تمثّل هذه الأرقام معيارًا مرجعيًا معتمدًا.</div>
+ </div>
+</section>
+
+<!-- ===== 08 MVP and future development ===== -->
+<section id="mvp">
+ <div class="container">
+  <div class="eyebrow reveal">08 · النموذج الأولي والتطوير المستقبلي</div>
+  <h2 class="reveal">ما هو موجود اليوم.<br>وما هو <span class='grad'>قادم.</span></h2>
+  <div class="roadmap reveal">
+   <div class="road now"><div class="phase">الآن · نموذج تجريبي</div><h3>تصوّر قابل للتجربة</h3><p>هذا النموذج التفاعلي: ملف، تقييم، توصيات، خارطة طريق وتقرير، ببيانات تجريبية ومنطق مُعدّ مسبقًا.</p></div>
+   <div class="road"><div class="phase">التالي · المنتج الأولي</div><h3>تقييم حقيقي</h3><p>استبيان مدروس خلف كل محور، وملفات محفوظة، ومحتوى عربي أولًا يُراجَع مع روّاد أعمال ثقافية.</p></div>
+   <div class="road"><div class="phase">لاحقًا · المساعد</div><h3>Ask SAM بالذكاء الاصطناعي</h3><p>مساعد يعتمد على نموذج لغوي ويستند إلى تقييم المستخدم نفسه وقاعدة معرفة مُراجَعة.</p></div>
+   <div class="road"><div class="phase">مستقبلًا · المنظومة</div><h3>الخبراء والمؤشرات</h3><p>دليل موثّق للخبراء والموارد، ومؤشرات مجمّعة، تُبنى مع شركاء القطاع عند انضمامهم.</p></div>
+   
+  </div>
+  <div class="grid reveal" style="margin-top:18px">
+   <div class="card"><div class="num">ما يجب أن تفعله</div><h3>المتطلبات الوظيفية</h3><p>إنشاء الملف · تقييم الجاهزية · تحديد الفجوات · اقتراح الإجراءات · بناء خارطة الطريق · الإجابة عن الأسئلة · إصدار تقرير.</p></div>
+   <div class="card"><div class="num">كيف يجب أن تعمل</div><h3>المتطلبات غير الوظيفية</h3><p>بسيطة · بالعربية والإنجليزية · تراعي الخصوصية · قابلة للتفسير · مناسبة للجوال · واضحة في حدودها.</p></div>
+   <div class="card"><div class="num">ما نريد إثباته</div><h3>معيار النجاح</h3><p>أن يفهم رائد الأعمال الثقافية وضع مشروعه خلال دقائق، ويعرف ما الذي يبدأ بالعمل عليه.</p></div>
+   
+  </div>
+ </div>
+</section>
+
+<!-- ===== 09 Responsible AI ===== -->
+<section id="responsible">
+ <div class="container">
+  <div class="eyebrow reveal">09 · الذكاء الاصطناعي المسؤول</div>
+  <h2 class="reveal">إرشاد مفيد.<br><span class='grad'>وحدود واضحة.</span></h2>
+  <div class="grid reveal">
+   <div class="card"><div class="num">ما نفعله</div><h3>نشرح ونرشد</h3><p>تقييم بدرجات شفافة، وشروحات بلغة بسيطة يمكن ربطها بما أدخله المستخدم.</p></div>
+   <div class="card"><div class="num">ما لا نفعله</div><h3>لا نحلّ محلّ الخبراء ولا نقرّر عنك</h3><p>لا تقدّم SAM أحكامًا قانونية أو مالية أو في الملكية الفكرية، ولا تضمن نتائج تجارية. القرار دائمًا لصاحب المشروع.</p></div>
+   <div class="card"><div class="num">البيانات</div><h3>الخصوصية أولًا</h3><p>معلومات المشروع تبقى لدى صاحبها، وأي مؤشرات للقطاع تكون مجمّعة ومجهولة الهوية. هذا النموذج لا يخزّن أي بيانات.</p></div>
+   
+  </div>
+  <div class="guard reveal">للشفافية: في هذا النموذج، الدرجة متوسط بسيط، والتوصيات مبنية على قواعد محددة، وردود Ask SAM مُعدّة مسبقًا، وجميع الخبراء والمؤشرات محتوى تجريبي. لا يعمل حاليًا أي ذكاء اصطناعي حيّ ولا مطابقة فعلية مع خبراء ولا ربط مع جهات خارجية.</div>
+ </div>
+</section>
+
+<!-- ===== 10 Expected value ===== -->
+<section id="value">
+ <div class="container">
+  <div class="eyebrow reveal">10 · القيمة المتوقعة</div>
+  <h2 class="reveal">منصة واحدة.<br><span class='grad'>ثلاثة مكاسب.</span></h2>
+  <div class="grid reveal">
+   <div class="card"><div class="num">01 · رائد الأعمال</div><h3>وضوح واتجاه</h3><p>يفهم نقاط قوته وفجواته، ويتبع مسارًا عمليًا بدلًا من التخمين.</p></div>
+   <div class="card"><div class="num">02 · جهات الدعم</div><h3>دعم أدقّ توجيهًا</h3><p>يمكن للحاضنات والمدربين والمستشارين أن يلتقوا بمشاريع تعرف مسبقًا ما تحتاج إليه.</p></div>
+   <div class="card"><div class="num">03 · القطاع الثقافي</div><h3>تراث يستمرّ بذاته</h3><p>حين تنمو الأعمال الثقافية باستدامة، تبقى الحِرف والمهارات والحكايات التي تقوم عليها حيّة في السوق.</p></div>
+   
+  </div>
+  <div class="question reveal"><div class="q">الهدف ليس تغيير <span class='grad'>ما يبدعونه.</span><br>بل تقوية <span class='grad'>المشروع القائم حوله.</span></div></div>
+ </div>
+</section>
+
+<!-- ===== 11 The pitch ===== -->
+<section id="pitch">
+ <div class="container cta">
+  <div class="eyebrow reveal">11 · خلاصة العرض</div>
+  <h2 class="reveal">«ماذا لو عرف كل مشروع ثقافي بدقة <span class='grad'>ما الذي يطوّره تاليًا؟</span>»</h2>
+  <p class="big reveal">هذه هي <strong>SAM</strong>، منصة تمكين الأعمال الثقافية. ويبدأ الحوار بـ: <strong>سم وش بغيت؟</strong></p>
+  <p class="reveal">ملف، وتقييم جاهزية شفاف، وتوصيات مرتّبة حسب الأولوية، وخارطة طريق، لتتحوّل القيمة الثقافية إلى قيمة تجارية مستدامة.</p>
+  <a class="button reveal" href="#demo">جرّب النموذج ←</a>
+  <div class="sadu" aria-hidden="true"></div>
+ </div>
+</section>
+</main>
+
+<footer>
+  <strong>SAM · منصة تمكين الأعمال الثقافية</strong><br>تصوّر مقترح · المملكة العربية السعودية · 2026<br>نموذج تجريبي ببيانات توضيحية. نورة حالة افتراضية لأغراض العرض.
+</footer>
+
+<script>
+/* ================= SAM prototype logic =================
+   Everything below runs locally with scripted, illustrative data.
+   No backend, no external API, no live AI. */
+document.documentElement.classList.add('js');
+const T = {"dims": ["المنتج والقيمة المقدَّمة", "الجمهور والوصول إلى السوق", "الحضور الرقمي والتجارة الإلكترونية", "العمليات والتخطيط", "التسعير والأساسيات المالية", "الوعي بالملكية الفكرية والحقوق"], "dimShort": ["القيمة المقدَّمة", "الوصول إلى السوق", "البيع الرقمي", "العمليات", "التسعير والمالية", "الملكية الفكرية"], "cats": ["الحِرف التقليدية والمنتجات التراثية", "التصميم الثقافي والإبداعي", "الأزياء والإنتاج الإبداعي", "المتاحف والتجارب الثقافية", "الفنون البصرية والأدائية", "مشاريع ثقافية أخرى"], "stages": ["فكرة", "بداية النشاط", "مرحلة النمو", "نشاط قائم"], "auds": ["المجتمع المحلي", "الزوّار والسيّاح", "العملاء عبر الإنترنت", "الشركات والجهات"], "status": ["في مرحلة بناء الأساسيات", "جاهز للتطوير", "جاهز للنمو"], "all": "جميع الفئات", "noura": "استوديو نورة للسدو", "lbl": {"strength": "نقطة قوة", "develop": "يحتاج تطويرًا", "priority": "الأولوية", "match": "مقترح لمحور", "illus": "ملف توضيحي", "save": "إضافة إلى القائمة المختصرة", "saved": "✓ أُضيف (تجريبي)", "doneOf": "أُنجزت {a} من {b} خطوات"}, "horizons": ["الآن · أول 30 يومًا", "التالي · من شهر إلى 3 أشهر", "لاحقًا · من 3 إلى 6 أشهر"], "recsIntro": "بناءً على مشروع في «{stage}» ضمن فئة {cat}، هذه هي المجالات الثلاثة التي يُنصح بالتركيز عليها أولًا.", "recs": [["اكتب جملة واحدة توضّح ما تصنعه، ولمن، وما الحكاية الثقافية التي يحملها. ثم اختبرها مع خمسة عملاء محتملين.", "حدّد منتجين أو ثلاثة تعبّر عن حكايتك الثقافية وتُباع بانتظام، وابنِ بقية منتجاتك حولها."], ["صِف عميلك المثالي بالتفصيل: من هو، وأين يشتري، ولماذا يهمّه عملك، قبل أن تنفق على الترويج.", "اختر شريحة عملاء جديدة واحدة، مثل هدايا الشركات أو الزوّار، ونفّذ تجربة صغيرة قابلة للقياس قبل التوسّع."], ["ابدأ بقناة واحدة متقنة: حساب منتظم بصور واضحة وأسعار ظاهرة وطريقة طلب بسيطة.", "انتقل من الطلب عبر الرسائل إلى متجر إلكتروني بسيط بصفحات منتجات واضحة وخيارات توصيل ودفع."], ["ارسم مسار الطلب الواحد من استلامه إلى تسليمه، وكم تستغرق كل خطوة. ستكون هذه أول خطة تشغيلية لك.", "ضع خطة شهرية بسيطة للطاقة الإنتاجية ومدد التنفيذ والمواد الأساسية، حتى لا يسبق النموُّ قدرتَك على التسليم."], ["احسب التكلفة الحقيقية لمنتج واحد: المواد، ووقتك، والتغليف، والتوصيل، قبل أن تحدّد سعره.", "راجع الأسعار منتجًا منتجًا: تحقّق من هوامش الربح، وافصل مال المشروع عن مالك الشخصي، وخطّط للسيولة في موسم الذروة."], ["احتفظ بسجلات مؤرَّخة لتصاميمك الأصلية، وتعرّف على أساسيات العلامات التجارية وحقوق المؤلف قبل نشر أعمالك على نطاق واسع.", "راجع اسم علامتك وتصاميمك وشراكاتك مع مستشار ملكية فكرية مؤهّل، ووثّق الاتفاقيات كتابيًا."]], "actions": [["اكتب القيمة المقدَّمة في جملة واحدة", "اجمع آراء خمسة عملاء محتملين"], ["حدّد ملامح عميلك الأساسي", "اكتب ثلاثة أماكن يشتري منها عملاؤك حاليًا"], ["حدّث صور المنتجات وأوصافها", "جهّز قناة طلب واحدة واضحة"], ["ارسم خطوات الطلب حتى التسليم", "ضع خطة إنتاج شهرية"], ["احسب التكلفة الكاملة لمنتج واحد", "حدّد الأسعار بهامش ربح واضح"], ["وثّق تصاميمك الأصلية بتواريخها", "تعرّف على أساسيات تسجيل العلامة التجارية"]], "experts": [{"i": "ع", "role": "مختص في استراتيجية العلامة والمنتج", "desc": "يساعد على تحويل القيمة الثقافية إلى قيمة مقدَّمة واضحة.", "format": "ورشة عمل · جلستان"}, {"i": "س", "role": "باحث في السوق والجمهور", "desc": "يساعد على تحديد العملاء المناسبين وطرق الوصول إليهم.", "format": "استشارة · 3 جلسات"}, {"i": "ر", "role": "مختص في التجارة الإلكترونية والتسويق الرقمي", "desc": "يساعد على تجهيز البيع عبر الإنترنت وبناء حضور رقمي منتظم.", "format": "تطبيق عملي · 4 أسابيع"}, {"i": "ت", "role": "مرشد في العمليات والتخطيط", "desc": "يساعد على تنظيم الإنتاج والمورّدين والتسليم.", "format": "إرشاد · شهريًا"}, {"i": "م", "role": "مستشار في التسعير ومالية المشاريع الصغيرة", "desc": "يساعد في حساب التكاليف والتسعير وأساسيات التخطيط المالي.", "format": "عيادة أعمال · جلستان"}, {"i": "ح", "role": "مستشار ملكية فكرية", "desc": "يوضّح كيفية حماية العلامة والتصاميم والأعمال الإبداعية.", "format": "استشارة · جلسة واحدة"}], "catTips": ["للحِرف: الوقت المبذول في كل قطعة يدوية جزء من قيمتها، فاحرص على أن يظهر في السعر وفي الحكاية معًا.", "لاستوديوهات التصميم: معرض أعمال واضح ونطاق خدمة محدد يساعدان العميل على فهم ما سيحصل عليه.", "للأزياء: خطّط للإنتاج والمقاسات مبكرًا، فهما يؤثران في التكلفة وفي تجربة العميل.", "للتجارب الثقافية: رحلة الحجز لا تقلّ أهمية عن التجربة نفسها.", "للفنانين: الفصل بين الأعمال الفريدة والعروض القابلة للتكرار، كالمطبوعات والورش، يساعد على استقرار الدخل.", "ابدأ بما يميّز عرضك ثقافيًا، ثم ابنِ أساسيات المشروع حوله."], "chat": {"hello": "مرحبًا، أنا Ask SAM. اسألني عن نتائج جاهزيتك أو عن سؤال شائع في تطوير الأعمال. هذه ردود تجريبية مُعدّة مسبقًا.", "suggest": [["why", "لماذا حصلت على هذه الدرجة؟"], ["first", "ما الذي أطوّره أولًا؟"], ["price", "كيف أسعّر منتجًا يدويًا؟"], ["online", "كيف أبدأ البيع عبر الإنترنت؟"], ["ip", "كيف أحمي تصاميمي؟"], ["identity", "كيف أنمو دون أن أفقد هويتي الثقافية؟"]], "why": "درجتك التوضيحية {s} من 100. أقوى محاورك: {a} و{b}. وأكثر ما يخفّض الدرجة: {c} و{d}.", "first": "ابدأ بمحور {c}.", "answers": {"price": "نقطة بداية بسيطة: اجمع تكلفة المواد، ووقتك بأجر عادل للساعة، والتغليف والتوصيل، ثم أضف هامش ربح للمشروع. للعمل اليدوي والتراثي قيمة إضافية، فاروِ حكايته حتى يكون السعر مفهومًا للعميل. هذا إرشاد عام وليس استشارة مالية.", "online": "ابدأ بخطوة صغيرة: قناة واحدة، وصور واضحة، وأسعار ظاهرة، وطريقة سهلة للطلب والدفع. وعندما تنتظم الطلبات انتقل إلى متجر إلكتروني بسيط. الانتظام أهم من التواجد في كل مكان.", "ip": "كخطوة أولى، احتفظ بسجلات مؤرَّخة لتصاميمك الأصلية، وانتبه لما تنشره قبل حمايته. العلامة التجارية تحمي الاسم والشعار، وهناك حقوق أخرى قد تشمل التصاميم والأعمال الإبداعية. ولحالتك تحديدًا، راجع الجهة الرسمية المختصة بالملكية الفكرية أو مستشارًا مؤهّلًا، فـSAM تقدّم توعية لا استشارة قانونية.", "identity": "حدّد ما لا يتغيّر أبدًا: التقنية، والمواد، والحكاية. وما يمكن تكييفه: المقاسات، والتغليف، وقنوات البيع. يتحقق النمو بأفضل صورة حين يبقى الجوهر الثقافي ثابتًا ويصبح المشروع من حوله أكثر مرونة.", "audience": "ابدأ بمن يشتري منك حاليًا ولماذا. ثم اسأل: أين يقضي أمثالهم وقتهم وينفقون مالهم؟ صورة واضحة عن شريحة واحدة أنفع من صورة غامضة عن الجميع."}, "fallback": "أنا نموذج تجريبي بردود مُعدّة مسبقًا، لذا أجيب حاليًا عن عدد محدود من الأسئلة. جرّب أحد الأسئلة المقترحة في الأسفل. في المنتج الكامل، سيجيب Ask SAM استنادًا إلى تقييمك أنت.", "keywords": [["why", ["لماذا", "ليش", "درج", "نتيج", "why", "score"]], ["first", ["أول", "اول", "أبدأ", "ابدأ", "أطوّر", "اطور", "أولوي", "first"]], ["price", ["سعر", "تسعير", "أسعّر", "اسعر", "تكلف", "هامش", "pric"]], ["online", ["إنترنت", "انترنت", "متجر", "بيع", "رقمي", "إلكترون", "الكترون", "انستقرام", "online"]], ["ip", ["أحمي", "احمي", "حماية", "حقوق", "ملكية", "علامة تجارية", "protect"]], ["identity", ["هوي", "أصال", "اصال", "تراث", "أنمو", "انمو", "نمو", "توسّع", "توسع"]], ["audience", ["جمهور", "عملا", "عميل", "سوق", "وصول"]]]}, "report": {"badge": "تقرير تطوير تجريبي · توضيحي", "unnamed": "مشروعك الثقافي", "sub": "SAM · تقرير جاهزية المشروع الثقافي", "cat": "الفئة", "stage": "المرحلة", "aud": "الجمهور الرئيسي", "dims": "الجاهزية حسب المحور", "strengths": "نقاط القوة", "gaps": "مجالات التطوير ذات الأولوية", "progress": "التقدّم", "shortlist": "الدعم المضاف إلى القائمة المختصرة", "disclaimer": "هذا التقرير صادر عن نموذج تجريبي بناءً على القيم المُدخلة في التجربة. وهو توضيحي ولا يُعدّ استشارة مهنية أو قانونية أو مالية."}};
+const RTL = document.documentElement.dir === 'rtl';
+const $ = id => document.getElementById(id);
+
+/* ---------- Sample data (illustrative only) ---------- */
+const PRESETS = [[82,48,35,60,40,45],[70,55,62,50,45,50],[75,60,58,42,48,40],[78,52,45,65,55,60],[80,45,50,40,35,55],[60,50,50,50,50,50]];
+const INSIGHTS = {all:[38,64,71,52,68,47],0:[30,66,78,50,74,49],1:[42,60,55,58,62,57],2:[36,62,60,70,66,52],3:[34,70,64,48,56,40],4:[40,72,66,60,76,54],5:[45,60,65,55,62,45]};
+const fresh = () => ({name:'',cat:0,stage:1,aud:0,ch:new Set(),vals:[...PRESETS[0]],saved:new Set(),done:new Set()});
+let S = fresh();
+
+/* ---------- Page chrome: progress bar, reveal, active nav ---------- */
+const progress = $('progress');
+const onScroll = () => {const h=document.documentElement.scrollHeight-innerHeight;progress.style.width=(h>0?scrollY/h*100:0)+'%'};
+addEventListener('scroll',onScroll,{passive:true});onScroll();
+const revealObs = new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');revealObs.unobserve(e.target)}}),{rootMargin:'0px 0px -6% 0px'});
+document.querySelectorAll('.reveal').forEach(x=>revealObs.observe(x));
+const navLinks=[...document.querySelectorAll('.navlinks a')];
+const navObs = new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)navLinks.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id))}),{rootMargin:'-45% 0px -50% 0px'});
+document.querySelectorAll('main section').forEach(x=>navObs.observe(x));
+
+/* ---------- Tabs ---------- */
+const tabs=[...document.querySelectorAll('.tab')];
+function go(name){
+  tabs.forEach(t=>{const on=t.dataset.tab===name;t.classList.toggle('on',on);t.setAttribute('aria-selected',on);if(on)t.scrollIntoView({block:'nearest',inline:'nearest'})});
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('on',p.id==='p-'+name));
+}
+tabs.forEach(t=>t.addEventListener('click',()=>go(t.dataset.tab)));
+document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>{go(b.dataset.go);$('demo').querySelector('.dashboard').scrollIntoView({block:'start',behavior:'smooth'})}));
+
+/* ---------- Derived results ---------- */
+const score = () => Math.round(S.vals.reduce((a,b)=>a+b,0)/S.vals.length);
+const status = s => s>=75?T.status[2]:s>=50?T.status[1]:T.status[0];
+/* Gaps: lowest dimensions first; a challenge the user flagged counts a little more. */
+const gaps = () => S.vals.map((v,i)=>[v-(S.ch.has(i)?8:0),i]).sort((a,b)=>a[0]-b[0]).slice(0,3).map(x=>x[1]);
+const strengths = () => {const g=gaps();return S.vals.map((v,i)=>[v,i]).filter(x=>!g.includes(x[1])).sort((a,b)=>b[0]-a[0]).slice(0,2).map(x=>x[1])};
+const recFor = d => T.recs[d][S.stage<2?0:1];
+const esc = s => s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ---------- Chip groups ---------- */
+function chips(el,items,isOn,onPick){
+  el.innerHTML='';
+  items.forEach((label,i)=>{const b=document.createElement('button');b.type='button';b.className='chip'+(isOn(i)?' on':'');b.textContent=label;b.setAttribute('aria-pressed',isOn(i));b.onclick=()=>{onPick(i);render()};el.appendChild(b)});
+}
+
+/* ---------- Sliders (built once, updated in place) ---------- */
+function buildSliders(){
+  $('sliders').innerHTML=T.dims.map((d,i)=>`<div class="bar"><label for="r${i}"><span>${d}</span><b id="v${i}"></b></label><input type="range" id="r${i}" min="0" max="100" step="1"></div>`).join('');
+  T.dims.forEach((_,i)=>$('r'+i).addEventListener('input',e=>{S.vals[i]=+e.target.value;render()}));
+}
+function paintSlider(i){
+  const r=$('r'+i),v=S.vals[i];r.value=v;$('v'+i).textContent=v+'%';
+  r.style.background=`linear-gradient(to ${RTL?'left':'right'},#ff9d4d 0%,#b8a6ff ${v}%,#221f27 ${v}%)`;
+}
+
+/* ---------- Render everything from state ---------- */
+function render(){
+  const sc=score(),g=gaps(),st=strengths();
+  chips($('catChips'),T.cats,i=>S.cat===i,i=>{S.cat=i;S.vals=[...PRESETS[i]]});
+  chips($('stageChips'),T.stages,i=>S.stage===i,i=>S.stage=i);
+  chips($('audChips'),T.auds,i=>S.aud===i,i=>S.aud=i);
+  chips($('chChips'),T.dimShort,i=>S.ch.has(i),i=>S.ch.has(i)?S.ch.delete(i):S.ch.add(i));
+
+  $('scoreNum').textContent=sc;$('statusPill').textContent=status(sc);
+  T.dims.forEach((_,i)=>paintSlider(i));
+  $('sgPills').innerHTML=st.map(i=>`<span class="pill good">${T.lbl.strength} · ${T.dimShort[i]}</span>`).join('')+g.map(i=>`<span class="pill warm">${T.lbl.develop} · ${T.dimShort[i]}</span>`).join('');
+
+  $('recsIntro').textContent=T.recsIntro.replace('{stage}',T.stages[S.stage]).replace('{cat}',T.cats[S.cat]);
+  $('recCards').innerHTML=g.map((d,n)=>`<div class="mini"><div class="k">${T.lbl.priority} ${n+1} · ${S.vals[d]}%</div><h4>${T.dims[d]}</h4><p>${recFor(d)}</p></div>`).join('');
+  $('catTip').textContent=T.catTips[S.cat];
+
+  $('expCards').innerHTML=g.map(d=>{const e=T.experts[d],on=S.saved.has(d);return `<div class="mini"><div class="avatar" aria-hidden="true">${e.i}</div><div class="k">${T.lbl.match} · ${T.dimShort[d]}</div><h4>${e.role}</h4><p>${e.desc}</p><div class="meta">${e.format} · ${T.lbl.illus}</div><button class="button${on?' saved':''}" data-save="${d}" aria-pressed="${on}">${on?T.lbl.saved:T.lbl.save}</button></div>`}).join('');
+  document.querySelectorAll('[data-save]').forEach(b=>b.onclick=()=>{const d=+b.dataset.save;S.saved.has(d)?S.saved.delete(d):S.saved.add(d);render()});
+
+  const keys=g.flatMap(d=>[d+'-0',d+'-1']),done=keys.filter(k=>S.done.has(k)).length;
+  $('roadCards').innerHTML=g.map((d,n)=>`<div class="mini"><div class="k">${T.horizons[n]}</div><h4>${T.dims[d]}</h4>${T.actions[d].map((a,j)=>{const k=d+'-'+j,on=S.done.has(k);return `<label class="todo${on?' done':''}"><input type="checkbox" data-todo="${k}"${on?' checked':''}><span>${a}</span></label>`}).join('')}</div>`).join('');
+  document.querySelectorAll('[data-todo]').forEach(c=>c.onchange=()=>{c.checked?S.done.add(c.dataset.todo):S.done.delete(c.dataset.todo);render()});
+  $('doneTxt').textContent=T.lbl.doneOf.replace('{a}',done).replace('{b}',keys.length);
+  $('doneFill').style.width=(done/keys.length*100)+'%';
+
+  const R=T.report,name=S.name.trim()?esc(S.name.trim()):R.unnamed;
+  $('report').innerHTML=`<div class="report-head"><div><span class="badge">${R.badge}</span><h3 style="font-size:30px;margin:14px 0 4px">${name}</h3><div class="source" style="margin:0">${R.sub}</div></div><div style="text-align:end"><div class="score">${sc}<span>/100</span></div><div class="pill warm" style="margin-top:8px">${status(sc)}</div></div></div>
+  <div class="kv"><div><small>${R.cat}</small>${T.cats[S.cat]}</div><div><small>${R.stage}</small>${T.stages[S.stage]}</div><div><small>${R.aud}</small>${T.auds[S.aud]}</div></div>
+  <h4>${R.dims}</h4>${T.dims.map((d,i)=>`<div class="hbar"><span>${d}</span><div class="track"><div class="fill" style="width:${S.vals[i]}%"></div></div><b>${S.vals[i]}%</b></div>`).join('')}
+  <h4>${R.strengths}</h4><ul>${st.map(i=>`<li>${T.dims[i]}</li>`).join('')}</ul>
+  <h4>${R.gaps}</h4><ul>${g.map(i=>`<li><strong>${T.dims[i]}.</strong> ${recFor(i)}</li>`).join('')}</ul>
+  <h4>${R.progress}</h4><ul><li>${T.lbl.doneOf.replace('{a}',done).replace('{b}',keys.length)}</li>${S.saved.size?`<li>${R.shortlist}: ${[...S.saved].filter(d=>g.includes(d)).map(d=>T.experts[d].role).join(RTL?'، ':', ')||'—'}</li>`:''}</ul>
+  <div class="source">${R.disclaimer}</div>`;
+}
+
+/* ---------- Ask SAM (scripted responses) ---------- */
+const log=$('log');
+function bubble(text,who){const b=document.createElement('div');b.className='bubble '+who;b.textContent=text;log.appendChild(b);log.scrollTop=log.scrollHeight;return b}
+function answer(key){
+  const g=gaps(),st=strengths(),C=T.chat;
+  if(key==='why')return C.why.replace('{s}',score()).replace('{a}',T.dimShort[st[0]]).replace('{b}',T.dimShort[st[1]]).replace('{c}',T.dimShort[g[0]]).replace('{d}',T.dimShort[g[1]]);
+  if(key==='first')return C.first.replace('{c}',T.dims[g[0]])+' '+recFor(g[0]);
+  return C.answers[key]||C.fallback;
+}
+function matchKey(text){const t=text.toLowerCase();for(const [key,words] of T.chat.keywords)if(words.some(w=>t.includes(w)))return key;return null}
+let busy=false;
+function ask(text,key){
+  if(busy||!text.trim())return;busy=true;
+  bubble(text,'user');
+  const wait=bubble('','bot');wait.innerHTML='<span class="typing"><i></i><i></i><i></i></span>';
+  setTimeout(()=>{wait.textContent=answer(key||matchKey(text));log.scrollTop=log.scrollHeight;busy=false},650);
+}
+function initChat(){
+  log.innerHTML='';bubble(T.chat.hello,'bot');
+  $('suggest').innerHTML='';
+  T.chat.suggest.forEach(([key,q])=>{const b=document.createElement('button');b.type='button';b.className='chip';b.textContent=q;b.onclick=()=>ask(key==='why'?q.replace('{s}',score()):q,key);$('suggest').appendChild(b)});
+}
+$('chatForm').addEventListener('submit',e=>{e.preventDefault();const i=$('chatIn');ask(i.value);i.value=''});
+
+/* ---------- Profile controls ---------- */
+$('bizName').addEventListener('input',e=>{S.name=e.target.value;render()});
+$('loadNoura').addEventListener('click',()=>{S=fresh();S.name=T.noura;S.cat=0;S.stage=1;S.aud=1;S.ch=new Set([2,4]);$('bizName').value=S.name;render();initChat();go('assess')});
+$('resetBtn').addEventListener('click',()=>{S=fresh();$('bizName').value='';render();initChat();go('profile')});
+$('printBtn').addEventListener('click',()=>{go('report');window.print()});
+
+/* ---------- Ecosystem insights (sample dataset) ---------- */
+let insKey='all';
+function renderInsights(){
+  const el=$('insChips');el.innerHTML='';
+  [['all',T.all],...T.cats.map((c,i)=>[String(i),c])].forEach(([k,label])=>{const b=document.createElement('button');b.type='button';b.className='chip'+(insKey===k?' on':'');b.textContent=label;b.onclick=()=>{insKey=k;renderInsights()};el.appendChild(b)});
+  const data=INSIGHTS[insKey];
+  if(!$('insBars').children.length)$('insBars').innerHTML=T.dims.map((d,i)=>`<div class="hbar"><span>${d}</span><div class="track"><div class="fill" id="if${i}" style="width:0"></div></div><b id="iv${i}"></b></div>`).join('');
+  requestAnimationFrame(()=>data.forEach((v,i)=>{$('if'+i).style.width=v+'%';$('iv'+i).textContent=v+'%'}));
+  $('insTop').textContent=T.dims[data.indexOf(Math.max(...data))];
+}
+
+buildSliders();render();initChat();renderInsights();
+</script>
+</body>
+</html>
